@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import {
+  SafeAreaProvider,
+  SafeAreaView,
+} from "react-native-safe-area-context";
 
 import { hasSession, me, type Identity } from "./src/api";
 import { DashboardScreen } from "./src/screens/DashboardScreen";
@@ -31,34 +35,37 @@ export default function App() {
     };
   }, []);
 
-  if (booting) {
-    return (
-      <View style={styles.boot}>
-        <StatusBar style="light" />
-        <ActivityIndicator color={colors.accentSoft} />
-      </View>
-    );
-  }
-
   return (
-    <>
+    <SafeAreaProvider>
       <StatusBar style="light" />
-      {identity ? (
-        <DashboardScreen
-          identity={identity}
-          onLogout={() => setIdentity(null)}
-        />
-      ) : (
-        <LoginScreen onAuthenticated={setIdentity} />
-      )}
-    </>
+      <SafeAreaView
+        style={styles.safe}
+        edges={["top", "bottom", "left", "right"]}
+      >
+        {booting ? (
+          <View style={styles.boot}>
+            <ActivityIndicator color={colors.accentSoft} />
+          </View>
+        ) : identity ? (
+          <DashboardScreen
+            identity={identity}
+            onLogout={() => setIdentity(null)}
+          />
+        ) : (
+          <LoginScreen onAuthenticated={setIdentity} />
+        )}
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
+  safe: {
+    backgroundColor: colors.bg,
+    flex: 1,
+  },
   boot: {
     alignItems: "center",
-    backgroundColor: colors.bg,
     flex: 1,
     justifyContent: "center",
   },
