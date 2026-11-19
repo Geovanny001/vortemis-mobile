@@ -27,7 +27,12 @@ change for the mobile client.
 ## Screens
 
 - **Login**: username, password and API base.
-- **Dashboard**: KPIs, tactic distribution, timeline and recent detections.
+- **Live**: KPIs, tactic distribution, timeline and recent detections.
+- **System**: engine metadata, feature baseline, session details and the
+  MITRE tactic catalog.
+
+The console uses a bottom tab bar (Live / System) and respects the device safe
+area, so the header stays clear of the status bar and notch.
 
 ## Auth and storage
 
